@@ -2275,6 +2275,7 @@ public class StandardContext extends ContainerBase
     @Override
     public ServletContext getServletContext() {
         if (context == null) {
+            //
             context = new ApplicationContext(this);
             if (altDDName != null)
                 context.setAttribute(Globals.ALT_DD_ATTR,altDDName);
