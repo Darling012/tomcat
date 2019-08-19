@@ -402,6 +402,7 @@ public class Tomcat {
      * @param servlet       The Servlet to add
      * @return The wrapper for the servlet
      */
+     //添加Wrapper容器
     public static Wrapper addServlet(Context ctx,
                                       String servletName,
                                       Servlet servlet) {
@@ -536,6 +537,7 @@ public class Tomcat {
      * present.
      * @param connector The connector instance to add
      */
+    //设置连接器
     public void setConnector(Connector connector) {
         Service service = getService();
         boolean found = false;
@@ -553,7 +555,9 @@ public class Tomcat {
      * Get the service object. Can be used to add more
      * connectors and few other global settings.
      * @return The service
+     *
      */
+    // 获取service
     public Service getService() {
         return getServer().findServices()[0];
     }
@@ -565,6 +569,7 @@ public class Tomcat {
      *
      * @param host The current host
      */
+      //设置Host容器
     public void setHost(Host host) {
         Engine engine = getEngine();
         boolean found = false;
@@ -643,6 +648,7 @@ public class Tomcat {
      * @return the deployed context
      * @see #addContext(String, String)
      */
+     //添加Context容器
     public Context addContext(Host host, String contextPath, String dir) {
         return addContext(host, contextPath, contextPath, dir);
     }
