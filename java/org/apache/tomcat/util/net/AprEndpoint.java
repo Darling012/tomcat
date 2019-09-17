@@ -77,6 +77,13 @@ import org.apache.tomcat.util.net.openssl.OpenSSLUtil;
  * @author Mladen Turk
  * @author Remy Maucherat
  */
+
+/**
+ * Endpoint 组件用来处理底层的 Socket 网络连接，AprEndpoint 里面有个叫 SocketProcessor 的内部类，
+ * 它负责为 AprEndpoint 将接收到的 Socket 请求转化成 Request 对象，
+ * SocketProcessor 实现了 Runnable 接口，它会有一个专门的线程池来处理，
+ * 后面我会单独从源码的角度分析 Endpoint 组件的设计原理
+ */
 public class AprEndpoint extends AbstractEndpoint<Long,Long> implements SNICallBack {
 
     // -------------------------------------------------------------- Constants
@@ -2121,6 +2128,7 @@ public class AprEndpoint extends AbstractEndpoint<Long,Long> implements SNICallB
         protected void doRun() {
             try {
                 // Process the request from this socket
+                // process 方法会创建一个 processor 对象，调用它的 process 方法将 Socket 字节流封装成 Request 对象，在创建 Processor 组件时，会将 Adapter 组件添加到 Processor 组件中
                 SocketState state = getHandler().process(socketWrapper, event);
                 if (state == Handler.SocketState.CLOSED) {
                     // Close socket and pool

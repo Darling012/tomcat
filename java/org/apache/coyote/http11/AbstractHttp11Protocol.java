@@ -933,8 +933,12 @@ public abstract class AbstractHttp11Protocol<S> extends AbstractProtocol<S> {
     }
 
 
+
     // ------------------------------------------------------------- Common code
 
+    /**
+     *  process 方法会创建一个 processor 对象，调用它的 process 方法将 Socket 字节流封装成 Request 对象，在创建 Processor 组件时，会将 Adapter 组件添加到 Processor 组件中
+     */
     @Override
     protected Processor createProcessor() {
         Http11Processor processor = new Http11Processor(this, adapter);

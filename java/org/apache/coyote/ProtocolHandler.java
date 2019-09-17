@@ -32,6 +32,11 @@ import org.apache.tomcat.util.net.SSLHostConfig;
  * @author Costin Manolache
  * @see Adapter
  */
+
+/**
+ * Tomcat 将处理请求的细节封装到 ProtocolHandler，ProtocolHandler 是一个接口类型，通过实现 ProtocolHandler 来实现各种协议的处理，如 Http11AprProtocol：
+ * ProtocolHandler 采用组件模式的设计，将处理网络连接，字节流封装成 Request 对象，再将 Request 适配成 Servlet 处理 ServletRequest 对象这几个动作，用组件封装起来了，ProtocolHandler 包括了三个组件：Endpoint、Processor、Adapter。
+ */
 public interface ProtocolHandler {
 
     /**
