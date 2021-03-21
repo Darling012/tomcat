@@ -267,7 +267,7 @@ public class Http11Processor extends AbstractProcessor {
         }
     }
 
-
+    //会去使用这个SocketWrapperBase对response和request进行赋值
     @Override
     public SocketState service(SocketWrapperBase<?> socketWrapper)
         throws IOException {

@@ -91,7 +91,7 @@ public class Acceptor<U> implements Runnable {
                 U socket = null;
                 try {
                     // Accept the next incoming connection from the server
-                    // socket
+                    // socket  会调用到jdk socket
                     socket = endpoint.serverSocketAccept();
                 } catch (Exception ioe) {
                     // We didn't get a socket
@@ -112,6 +112,7 @@ public class Acceptor<U> implements Runnable {
                 if (endpoint.isRunning() && !endpoint.isPaused()) {
                     // setSocketOptions() will hand the socket off to
                     // an appropriate processor if successful
+                    // 把socket对象放入endpoint当中
                     if (!endpoint.setSocketOptions(socket)) {
                         endpoint.closeSocket(socket);
                     }

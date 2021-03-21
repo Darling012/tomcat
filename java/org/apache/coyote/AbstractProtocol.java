@@ -718,7 +718,7 @@ public abstract class AbstractProtocol<S> implements ProtocolHandler,
 
 
     // ------------------------------------------- Connection handler base class
-
+    // ConnectionHandler.process()方法会创建Http11Processor处理器用于http协议的处理.
     protected static class ConnectionHandler<S> implements AbstractEndpoint.Handler<S> {
 
         private final AbstractProtocol<S> proto;
