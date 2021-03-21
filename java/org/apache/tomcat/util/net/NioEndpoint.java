@@ -422,6 +422,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
             socketWrapper.setWriteTimeout(getConnectionTimeout());
             socketWrapper.setKeepAliveLeft(NioEndpoint.this.getMaxKeepAliveRequests());
             socketWrapper.setSecure(isSSLEnabled());
+            //
             poller.register(channel, socketWrapper);
             return true;
         } catch (Throwable t) {
@@ -583,6 +584,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
         private void addEvent(PollerEvent event) {
             events.offer(event);
             if (wakeupCounter.incrementAndGet() == 0) {
+                //
                 selector.wakeup();
             }
         }
@@ -656,6 +658,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
             } else {
                 r.reset(socket, OP_REGISTER);
             }
+            //
             addEvent(r);
         }
 
@@ -733,6 +736,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
                 // any active event.
                 while (iterator != null && iterator.hasNext()) {
                     SelectionKey sk = iterator.next();
+                    //
                     NioSocketWrapper socketWrapper = (NioSocketWrapper) sk.attachment();
                     // Attachment may be null if another thread has called
                     // cancelledKey()
@@ -740,6 +744,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
                         iterator.remove();
                     } else {
                         iterator.remove();
+                        //
                         processKey(sk, socketWrapper);
                     }
                 }
@@ -758,11 +763,13 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
                 } else if (sk.isValid() && socketWrapper != null) {
                     if (sk.isReadable() || sk.isWritable()) {
                         if (socketWrapper.getSendfileData() != null) {
+                            //
                             processSendfile(sk, socketWrapper, false);
                         } else {
                             unreg(sk, socketWrapper, sk.readyOps());
                             boolean closeSocket = false;
                             // Read goes before write
+                            //// 1. 处理读事件，比如生成Request对象
                             if (sk.isReadable()) {
                                 if (socketWrapper.readOperation != null) {
                                     if (!socketWrapper.readOperation.process()) {
@@ -772,6 +779,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
                                     closeSocket = true;
                                 }
                             }
+                            // 1. 处理读事件，比如生成Request对象
                             if (!closeSocket && sk.isWritable()) {
                                 if (socketWrapper.writeOperation != null) {
                                     if (!socketWrapper.writeOperation.process()) {
@@ -1554,6 +1562,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel,SocketChannel> 
                 if (handshake == 0) {
                     SocketState state = SocketState.OPEN;
                     // Process the request from this socket
+                    // 调用AbstractProtocol.process
                     if (event == null) {
                         state = getHandler().process(socketWrapper, SocketEvent.OPEN_READ);
                     } else {

@@ -91,6 +91,7 @@ public class Acceptor<U> implements Runnable {
                 U socket = null;
                 try {
                     // Accept the next incoming connection from the server
+                    //监听客户端连接，监听到连接后（即浏览器向服务器发起一次请求）
                     // socket  会调用到jdk socket
                     socket = endpoint.serverSocketAccept();
                 } catch (Exception ioe) {

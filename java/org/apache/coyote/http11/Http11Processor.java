@@ -405,6 +405,7 @@ public class Http11Processor extends AbstractProcessor {
             if (getErrorState().isIoAllowed()) {
                 try {
                     rp.setStage(org.apache.coyote.Constants.STAGE_SERVICE);
+                    // StandardEngineValve --> ErrorReportValve --> StandardHostValve --> StandardPipeline 直到StandardContextValve-->StandardWrapperValve然后终于到了tomcat和spring的分水岭。StandardWrapperValve这个类就是分水岭，因为这个类持有一个servlet，实例化的时候会被实例化为dispatchservlet，而dispatchservlet就是spring中的概念了。
                     getAdapter().service(request, response);
                     // Handle when the response was committed before a serious
                     // error occurred.  Throwing a ServletException should both
